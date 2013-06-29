@@ -15,6 +15,13 @@ box_names.each do |box_name|
   task box_name => box_file
   task :default => box_name
 
+  desc "Add #{box_name} box to Vagrant"
+  task "add:#{box_name}" do
+    sh %(vagrant box add --force --provider aws #{box_name} boxes/#{box_name}.box)
+  end
+
+  task :add => "add:#{box_name}"
+
 end
 
 task :clean do
