@@ -1,0 +1,18 @@
+Vagrant.configure("2") do |config|
+
+  config.vm.provider :aws do |aws|
+
+    aws.region = "us-east-1"
+
+    aws.region_config "ap-northeast-1", :ami => "ami-b95ad2b8"
+    aws.region_config "ap-southeast-1", :ami => "ami-b98bc5eb"
+    aws.region_config "ap-southeast-2", :ami => "ami-ebe675d1"
+    aws.region_config "eu-west-1", :ami => "ami-f5998981"
+    aws.region_config "sa-east-1", :ami => "ami-86d97c9b"
+    aws.region_config "us-east-1", :ami => "ami-e5582d8c"
+    aws.region_config "us-west-1", :ami => "ami-17e6c852"
+    aws.region_config "us-west-2", :ami => "ami-1b6ffe2b"
+
+  end
+
+end
