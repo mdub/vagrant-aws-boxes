@@ -13,7 +13,7 @@ box_names.each do |box_name|
   end
 
   task box_name => box_file
-  task :default => box_name
+  task :build => box_name
 
   desc "Add #{box_name} box to Vagrant"
   task "add:#{box_name}" do
@@ -27,3 +27,5 @@ end
 task :clean do
   sh "rm boxes/*.box"
 end
+
+task :default => :build
