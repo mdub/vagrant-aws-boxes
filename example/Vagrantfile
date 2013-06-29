@@ -1,0 +1,44 @@
+# This vagrant should work with both the :virtualbox and :aws providers.
+
+Vagrant.configure("2") do |config|
+
+  config.vm.box = "precise64"
+
+  config.vm.provider :aws do |aws, override|
+
+    # Your credentials, please:
+    aws.access_key_id = 'YOUR_ACCESS_KEY'
+    aws.secret_access_key = 'YOUR_SECRET_KEY'
+
+    # What region do you want to run in?
+    aws.region = 'ap-southeast-2'
+
+    # Specify the name of a key-pair in that region:
+    aws.keypair_name = "mdub@dogbiscuit.org"
+
+    # Where do you
+    override.ssh.private_key_path = File.expand_path("~/.ssh/id_rsa")
+
+    # Specify a security-group that allows SSH access:
+    aws.security_groups = ["ssh"]
+
+    # You'll be logging in as "ubuntu".
+    #  (I wish this could be specified in the box file)
+    override.ssh.username = "ubuntu"
+
+  end
+
+  config.berkshelf.enabled = true
+
+  # The Ubuntu AMIs don't come with Chef installed, so we'll have to install it.
+  config.vm.provision :shell, :inline => <<-BASH
+    chef-solo --version || curl -s -L https://www.opscode.com/chef/install.sh | bash
+  BASH
+
+  # Install other useful stuff.
+  config.vm.provision :chef_solo do |chef|
+    chef.add_recipe 'apt'
+    chef.add_recipe 'git'
+  end
+
+end
